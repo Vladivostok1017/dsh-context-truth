@@ -1,0 +1,60 @@
+{
+  "name": "dsh-context-truth",
+  "version": "1.1.0",
+  "description": "DSH plugin: inject the real context budget into the model, correct false \"context exhausted\" claims, and provide a /context command to force an injection on demand.",
+  "keywords": [
+    "dsh",
+    "dsh-plugin",
+    "deepseek-harness",
+    "cordis",
+    "context",
+    "context-window",
+    "token-meter",
+    "compaction",
+    "hallucination"
+  ],
+  "type": "module",
+  "main": "index.js",
+  "exports": {
+    ".": "./index.js",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "index.js",
+    "cordis.patch.yml",
+    "README.md",
+    "README.en.md",
+    "CHANGELOG.md",
+    "LICENSE",
+    "docs",
+    "tools",
+    "test"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "test": "node test/selftest.mjs",
+    "check": "node --check index.js && node test/selftest.mjs",
+    "measure": "node tools/measure-context.mjs",
+    "pack:tgz": "npm pack --pack-destination dist"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Vladivostok1017/dsh-context-truth.git"
+  },
+  "homepage": "https://github.com/Vladivostok1017/dsh-context-truth#readme",
+  "bugs": {
+    "url": "https://github.com/Vladivostok1017/dsh-context-truth/issues"
+  },
+  "author": "Vladivostok1017",
+  "publishConfig": {
+    "access": "public"
+  },
+  "license": "MIT"
+}

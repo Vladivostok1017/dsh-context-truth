@@ -1,0 +1,29 @@
+# dsh-context-truth —— DSH bundle patch
+# 挂载声明：本包被列进 profile 的 `dsh.profile.bundles` 时，这一行会把插件插进配置树。
+#
+# 标准安装（走 DSH 自己的插件管理）：
+#   dsh plugin --profile web add link:<本目录绝对路径>
+# 该命令会写入 link: 依赖、生成 node_modules junction，并因为本文件声明的 dsh.bundle.patch
+# 而自动把 dsh-context-truth 追加进 dsh.profile.bundles。装完重启 DSH 生效。
+#
+# 热挂载（免重启，仅调试用；必须换 id）：
+#   在 $DSH_HOME/cordis.patch.yml 里另插一条，id 不要与下面的 context-truth 重复：
+#     - insert:
+#         - id: context-truth-hotpatch
+#           name: 'file:///<本目录绝对路径>/index.js'
+#   同 id 双挂载会让 loader 在 validate 阶段失败（duplicate loader entry id）。
+#
+# 可用配置（可选，全部有默认值，写在挂载条目的 config 下）：
+#   thresholdRatio         : 压缩阈值兜底值，默认 0.8（settings.yaml 的 compaction.thresholdRatio 优先）
+#   claimTolerance         : 判定「假性断言」的容差，默认 0.02
+#   corrections            : false = 只注入事实、不做更正，默认 true
+#   maxCorrectionsPerTurn  : 每轮最多更正次数，默认 1
+#   commandName            : 命令名，默认 context；false = 不注册命令
+#   commandAliases         : 命令别名，默认 [ctx]
+#   commandMode            : auto | turn | queue，默认 auto
+#   enabled                : false = 整体关闭
+#   allowMultipleMounts    : true = 允许同进程多实例（一般不需要）
+
+- insert:
+    - id: context-truth
+      name: dsh-context-truth

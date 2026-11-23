@@ -1,0 +1,9 @@
+# 统一行尾为 LF（仓库在 Windows 上开发、在 Linux 上跑 CI）
+* text=auto eol=lf
+
+# 二进制/产物
+*.tgz binary
+*.png binary
+*.jpg binary
+*.mp3 binary
+*.zst binary
