@@ -219,6 +219,7 @@ AGENTS.md                  给编码 agent 的仓库约定
 test/selftest.mjs          34 项自检（npm test）
 tools/measure-context.mjs  会话日志取证：逐步真实用量 vs 压缩阈值
 .github/workflows/ci.yml   CI：Node 20/22/24 × 语法检查 + 自检 + 打包冒烟
+scripts/publish-release.ps1  建 Release 并上传资产（令牌只从环境变量读，支持 -DryRun）
 ```
 
 ## 参与开发

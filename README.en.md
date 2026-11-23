@@ -206,6 +206,7 @@ AGENTS.md                  repository invariants for coding agents
 test/selftest.mjs          34 self-checks (npm test)
 tools/measure-context.mjs  session-log forensic tool: per-step usage vs threshold
 .github/workflows/ci.yml   CI: Node 20/22/24 × syntax check + self-checks + pack smoke test
+scripts/publish-release.ps1  create the Release and upload assets (token from env only, -DryRun supported)
 ```
 
 ## Contributing

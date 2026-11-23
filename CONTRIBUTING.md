@@ -59,7 +59,16 @@ node tools/measure-context.mjs "<会话目录>\session.v3.jsonl.zstd"
 
 ## 发布
 
-1. 改 `package.json` 的 `version` 与 `CHANGELOG.md`；
-2. `npm run pack:tgz` 产出 `dist/*.tgz` 做冒烟；
-3. `git tag v<version> && git push --tags`，在 GitHub Releases 附上 tgz；
-4. （如需上 npm）`npm publish`。
+1. 改 `package.json` 的 `version` 与 `CHANGELOG.md`——Release notes 直接取 CHANGELOG 里对应版本段，
+   所以要写得能直接当发布说明用；
+2. `npm run pack:tgz` 产出 `dist/dsh-context-truth-<version>.tgz`，并生成 `dist/SHA256SUMS.txt`；
+3. `git tag -a v<version> -m "<摘要>" && git push origin v<version>`；
+4. 建 Release 并上传资产（脚本幂等，读环境变量里的令牌，不写盘）：
+
+   ```powershell
+   .\scripts\publish-release.ps1 -DryRun      # 先看计划：仓库/tag/资产/校验和/notes
+   $env:GITHUB_TOKEN = '<fine-grained PAT，需 Contents: Read and write>'
+   .\scripts\publish-release.ps1
+   ```
+
+5. （如需上 npm）`npm publish`。
