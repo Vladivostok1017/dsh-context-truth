@@ -157,6 +157,13 @@ if ($DryRun) {
     Write-Host ''
     Write-Host '--- Release notes ---'
     Write-Host $notes
+
+    # Also drop the notes next to the asset so the web-UI path can paste them.
+    $notesPath = Join-Path $distDir ('RELEASE_NOTES_' + $Tag + '.md')
+    $utf8NoBom = New-Object System.Text.UTF8Encoding($false)
+    [IO.File]::WriteAllText($notesPath, $notes, $utf8NoBom)
+    Write-Host ''
+    Write-Host "Notes written to: $notesPath"
     exit 0
 }
 
