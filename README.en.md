@@ -41,7 +41,7 @@ This plugin replaces guessing with telling:
 Before every `agent/pre-step`, the plugin measures
 `ctx.tokenMeter.measure(session).totalTokens` — **the very number automatic compaction uses** — against
 `session.requestContext().contextWindow`, then injects one native context message
-(`source.plugin = 'context-truth'`, persisted and auditable in the trajectory panel):
+(`source.kind = 'plugin:context-truth'`, persisted and auditable in the trajectory panel):
 
 ```
 Context budget for this request (measured by the harness token meter, the same figure automatic
@@ -95,7 +95,7 @@ For the case "the model is already hallucinating, but the automatic 10% boundary
 | Trigger | `ctx.on('agent/pre-step', …, { prepend: true })`, appending messages after `next()` |
 | Data source | `ctx.tokenMeter.measure(session).totalTokens` + `session.requestContext().contextWindow` |
 | Frequency | step 1; then once per 10% boundary crossed; every step inside the last 5% before the threshold; unconditionally once after a manual command |
-| Shape | native `user` message with `source = { kind: 'plugin', plugin: 'context-truth' }` |
+| Shape | native `user` message with `source = { kind: 'plugin:context-truth' }` |
 | Detection | text sanitization + four-condition conjunction, per-turn cap |
 | Command | `ctx.commands.register({ name, description, handler })`, disposed with the plugin |
 | State | one record per session (`last percent`, `turn`, `corrections this turn`, `pending`), FIFO-evicted past 500 sessions |
@@ -114,7 +114,7 @@ dsh plugin --profile web add link:<absolute path to this repo>
 
 # or from a packed tarball
 npm run pack:tgz
-dsh plugin --profile web add link:<absolute path>\dist\dsh-context-truth-1.1.0.tgz
+dsh plugin --profile web add link:<absolute path>\dist\dsh-context-truth-1.1.1.tgz
 ```
 
 `dsh plugin` forwards to pnpm, links the package into the profile, and appends `dsh-context-truth`
@@ -173,9 +173,9 @@ npm run check   # syntax check + self-checks
 
 Once installed, confirm in your own session:
 
-1. **Trajectory panel**: rows from source `context-truth` with `kind = context`;
+1. **Trajectory panel**: injected rows from source `plugin:context-truth`;
 2. **Command palette**: typing `/` lists "inject the current context budget into the model";
-3. **Session log**: a `user/message` with `source.plugin === 'context-truth'`;
+3. **Session log**: a `user/message` with `source.kind === 'plugin:context-truth'`;
 4. **Usage audit** (optional): `node tools/measure-context.mjs "<session>\session.v3.jsonl.zstd"` —
    decodes DSH's append-only log frame by frame and prints per-step prompt usage, window percentage,
    compaction events, and whether the peak crossed the threshold.

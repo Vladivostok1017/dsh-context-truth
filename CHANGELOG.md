@@ -3,6 +3,16 @@
 本项目的所有重要变更都记录在这里。格式参考 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/)，
 版本号遵循 [语义化版本](https://semver.org/lang/zh-CN/)。
 
+## [1.1.1] - 2026-11-26
+
+### Fixed
+
+- **DSH session format v4 compatibility**: injected messages now use the V4 producer-owned source shape
+  `source.kind = 'plugin:context-truth'` instead of the retired V3 `{ kind: 'plugin', plugin: 'context-truth' }`.
+  On DSH 0.2.2+ the old shape was rejected on the next round with
+  `format v4 message requires a producer-owned source kind`, failing the turn after the injected context was replayed.
+- Updated the self-test and documentation to verify the V4 source shape.
+
 ## [1.1.0] - 2026-11-14
 
 ### Added

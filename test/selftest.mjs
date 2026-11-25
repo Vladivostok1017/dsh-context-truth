@@ -198,7 +198,7 @@ await check('自动注入：43% 时注入事实行，不注入更正', async () 
   const { agent } = makeAgent()
   const decision = await preStep(ctx)({ agent, turn: 1, signal: {} }, async () => ({ kind: 'enter', messages: [] }))
   assert.equal(decision.messages.length, 1)
-  assert.equal(decision.messages[0].source.plugin, 'context-truth')
+  assert.equal(decision.messages[0].source.kind, 'plugin:context-truth')
   assert.match(decision.messages[0].content[0].text, /not near its limit/)
 })
 

@@ -12,7 +12,7 @@
  * ## 三条能力
  * 1. **自动事实注入**（`agent/pre-step`）：step 1、每跨 10% 刻度、接近阈值时，
  *    用 `ctx.tokenMeter.measure()`（压缩判定用的同一个数字）+ `session.requestContext().contextWindow`
- *    算出真实百分比与阈值，作为 `source.plugin = 'context-truth'` 的上下文注入。
+ *    算出真实百分比与阈值，作为 `source.kind = 'plugin:context-truth'` 的上下文注入。
  * 2. **假性断言更正**：上一条 assistant 消息在低于阈值时声称耗尽 → 补一条更正。
  *    识别是**保守**的：先剥掉代码块/行内代码/引号引用/块引用，再要求
  *    「上下文类断言 + 第一人称 + 停止意图 + 否定语境排除」同时成立。
@@ -214,8 +214,7 @@ function pluginMessage(text, form = 'snapshot') {
     role: 'user',
     content: [{ type: 'text', text: body }],
     source: {
-      kind: 'plugin',
-      plugin: name,
+      kind: `plugin:${name}`,
       form,
       sections: [{ name, text: body }],
     },

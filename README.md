@@ -38,7 +38,7 @@ DSH 里量上下文的事由 `token-meter` 负责，但它的结果只喂 UI 投
 
 每个 `agent/pre-step` 之前，用 `ctx.tokenMeter.measure(session).totalTokens`
 ——**与自动压缩判定完全同一个数字**——配合 `session.requestContext().contextWindow`，
-算出真实百分比 / 余量 / 阈值，注入一条 `source.plugin = 'context-truth'` 的宿主原生上下文
+算出真实百分比 / 余量 / 阈值，注入一条 `source.kind = 'plugin:context-truth'` 的宿主原生上下文
 （会落盘，可在轨迹面板审计）：
 
 ```
@@ -92,7 +92,7 @@ Markdown 块引用；若整条消息在讨论检测器本身（含 `claimsContex
 | 触发 | `ctx.on('agent/pre-step', …, { prepend: true })`，`next()` 之后追加消息 |
 | 数据源 | `ctx.tokenMeter.measure(session).totalTokens` + `session.requestContext().contextWindow` |
 | 注入频率 | step 1；之后每跨 10% 刻度一次；进入阈值前 5% 区间后每步一次；手动命令挂起时无条件一次 |
-| 注入形态 | 宿主原生 `user` 消息，`source = { kind: 'plugin', plugin: 'context-truth' }` |
+| 注入形态 | 宿主原生 `user` 消息，`source = { kind: 'plugin:context-truth' }` |
 | 更正判定 | 正文净化 + 四条件合取（见上），每轮上限可配 |
 | 命令注册 | `ctx.commands.register({ name, description, handler })`，随插件卸载自动注销 |
 | 状态 | 每会话一条 `{ 上次百分比, 当前 turn, 本轮更正数, 挂起数 }`，超过 500 会话按 FIFO 淘汰 |
@@ -119,7 +119,7 @@ dsh plugin --profile web add link:<本仓库绝对路径>
 
 ```powershell
 npm run pack:tgz      # 产出 dist/dsh-context-truth-<version>.tgz
-dsh plugin --profile web add link:<绝对路径>\dist\dsh-context-truth-1.1.0.tgz
+dsh plugin --profile web add link:<绝对路径>\dist\dsh-context-truth-1.1.1.tgz
 ```
 
 ### ⚠ 方式 C：热挂载（仅调试，注意 entry id）
@@ -185,9 +185,9 @@ npm run check   # 语法检查 + 自检
 
 安装后在你的会话里确认：
 
-1. **轨迹面板**：出现来源 `context-truth`、`kind = context` 的行；
+1. **轨迹面板**：出现来源 `plugin:context-truth` 的注入行；
 2. **命令面板**：输入 `/` 能看到「立即把当前上下文余量注入给模型」；
-3. **会话日志**：存在 `user/message` 且 `source.plugin === 'context-truth'`；
+3. **会话日志**：存在 `user/message` 且 `source.kind === 'plugin:context-truth'`；
 4. **用量核对**（可选）：`node tools/measure-context.mjs "<会话>\session.v3.jsonl.zstd"`，
    逐帧解压 DSH 的 append-only 日志，打印每一步真实 prompt 用量、窗口百分比、压缩事件，
    以及峰值是否越过阈值。

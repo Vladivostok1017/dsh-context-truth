@@ -56,7 +56,7 @@ dsh plugin --profile web add link:<本仓库绝对路径>     # 或已在 profil
 ```
 
 生效判据：轨迹面板出现来源 `context-truth` 的 `kind = context` 行；命令面板可搜到
-`/context`；会话日志有 `user/message` 且 `source.plugin === 'context-truth'`。
+`/context`；会话日志有 `user/message` 且 `source.kind === 'plugin:context-truth'`。
 
 ## 改代码时的常见坑
 
